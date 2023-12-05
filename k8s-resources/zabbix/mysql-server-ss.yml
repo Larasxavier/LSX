@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: mysql-server
+  name: mysql-server
+  namespace: zabbix
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: mysql-server
+  serviceName: mysql-server
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: mysql-server
+      namespace: zabbix
+    spec:
+      containers:
+        - args:
+            - '--default-authentication-plugin=mysql_native_password'
+            - '--character-set-server=utf8'
+            - '--collation-server=utf8_bin'
+          envFrom:
+            - secretRef:
+                name: zabbix-db-secrets
+                optional: false
+          image: mysql:8.0.19
+          imagePullPolicy: IfNotPresent
+          name: mysql-server
+          ports:
+            - containerPort: 3306
+              name: mysql-server
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: mysql-persistent-storage
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pv
+  updateStrategy:
+    rollingUpdate:
+      partition: 0
+    type: RollingUpdate

@@ -1,44 +1,45 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   labels:
-    k8s-app: zabbix-web
-  name: zabbix-web
+    k8s-app: zabbix-server-1
+    zabbix-app: server
+  name: zabbix-server-1
+  namespace: zabbix
 spec:
-  progressDeadlineSeconds: 600
+  podManagementPolicy: OrderedReady
   replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      k8s-app: zabbix-web
-  strategy:
-    type: Recreate
+      k8s-app: zabbix-server-1
+  serviceName: zabbix-server
   template:
     metadata:
       creationTimestamp: null
       labels:
-        k8s-app: zabbix-web
+        k8s-app: zabbix-server-1
+        name: zabbix-server
       namespace: zabbix
     spec:
       containers:
         - envFrom:
             - configMapRef:
-                name: zabbix-web-envs
+                name: zabbix-server-1-envs
                 optional: false
             - secretRef:
                 name: zabbix-db-secrets
                 optional: false
-          image: zabbix/zabbix-web-nginx-mysql:6.0.23-centos
+          image: larasxavier/zabbix-server-mysql:6.0.23-centos
           imagePullPolicy: IfNotPresent
-          name: zabbix-web
+          name: zabbix-server
           ports:
-            - containerPort: 8080
-              name: http
+            - containerPort: 10051
+              name: 10051tcp
               protocol: TCP
-            - containerPort: 8443
-              name: https
-              protocol: TCP
-          resources: {}
+          resources:
+            requests:
+              cpu: 250m
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
       dnsPolicy: ClusterFirst
@@ -46,3 +47,5 @@ spec:
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 30
+  updateStrategy:
+    type: RollingUpdate

@@ -1,0 +1,37 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/backend-protocol: HTTP
+    ingress.kubernetes.io/secure-backends: 'false'
+    ingress.kubernetes.io/timeout-client: 1800s
+    ingress.kubernetes.io/timeout-client-fin: 90s
+    ingress.kubernetes.io/timeout-connect: 60s
+    ingress.kubernetes.io/timeout-http-request: 60s
+    ingress.kubernetes.io/timeout-queue: 60s
+    ingress.kubernetes.io/timeout-server: 1800s
+    ingress.kubernetes.io/timeout-server-fin: 300s
+    kubernetes.io/acme-endpoint: v2
+    kubernetes.io/ingress.class: haproxy
+    kubernetes.io/ssl-redirect: 'true'
+    kubernetes.io/tls-acme: 'true'
+  labels:
+    app: rancher
+    release: rancher
+  name: zabbix-web
+  namespace: zabbix
+spec:
+  rules:
+    - host: zabbix-172.206.65.6.nip.io
+      http:
+        paths:
+          - backend:
+              service:
+                name: zabbix-web
+                port:
+                  number: 80
+            pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - zabbix-172.206.65.6.nip.io
+      secretName: tls-rancher-ingress

@@ -1,0 +1,13 @@
+apiVersion: v1
+data:
+  ENABLE_WEB_ACCESS_LOG: 'true'
+  PHP_TZ: America/Maceio
+  TZ: America/Maceio
+  ZBX_SERVER_NAME: K8s LSX
+  ZBX_UPLOADMAXFILESIZE: 20M
+kind: ConfigMap
+metadata:
+  labels:
+    k8s-app: zabbix-web
+  name: zabbix-web-envs
+  namespace: zabbix
