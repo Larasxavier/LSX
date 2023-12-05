@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    k8s-app: zabbix-agent
+  name: zabbix-agent
+  namespace: zabbix
+spec:
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      k8s-app: zabbix-agent
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        k8s-app: zabbix-agent
+      namespace: zabbix
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: zabbix-agent-envs
+                optional: false
+          image: zabbix/zabbix-agent:6.0.23-centos
+          imagePullPolicy: IfNotPresent
+          name: zabbix-agent
+          ports:
+            - containerPort: 10050
+              hostPort: 10050
+              name: agent
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+            readOnlyRootFilesystem: false
+            runAsNonRoot: false
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsConfig: {}
+      dnsPolicy: ClusterFirstWithHostNet
+      hostNetwork: true
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+  updateStrategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+    type: RollingUpdate

@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: zabbix-web
+  name: zabbix-web
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      k8s-app: zabbix-web
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        k8s-app: zabbix-web
+      namespace: zabbix
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: zabbix-web-envs
+                optional: false
+            - secretRef:
+                name: zabbix-db-secrets
+                optional: false
+          image: zabbix/zabbix-web-nginx-mysql:6.0.19-centos
+          imagePullPolicy: IfNotPresent
+          name: zabbix-web
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+            - containerPort: 8443
+              name: https
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
