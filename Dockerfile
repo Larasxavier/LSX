@@ -10,8 +10,6 @@ USER root
 
 RUN yum clean all && \
     yum repolist && \
-    #yum -y install openssl oracle-instantclient oracle-instantclient-odbc && \
-    #ACCEPT_EULA=Y yum -y install msodbcsql18 && \
     rm -rf /var/cache/yum/*
 
 
