@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  ZBX_HOSTNAME: Zabbix server
+  ZBX_SERVER_HOST: 10.42.0.88
+kind: ConfigMap
+metadata:
+  name: zabbix-agent-envs
