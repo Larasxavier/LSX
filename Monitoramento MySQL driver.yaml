@@ -1,0 +1,28 @@
+zabbix_export:
+  version: '6.0'
+  date: '2023-12-05T19:28:06Z'
+  groups:
+    - uuid: b125f64b20834cd78da3db1f7ce6238c
+      name: 'Monitoração de Banco MySQL'
+  hosts:
+    - host: 10.0.0.4
+      name: 'Instância do Zabbix'
+      templates:
+        - name: 'MySQL by Zabbix agent'
+      groups:
+        - name: 'Monitoração de Banco MySQL'
+      interfaces:
+        - ip: 10.0.0.4
+          dns: k3s-server-node
+          interface_ref: if1
+      macros:
+        - macro: '{$MYSQL.DSN}'
+          value: mysql-server
+          description: 'System data source name.'
+        - macro: '{$MYSQL.PASSWORD}'
+          type: SECRET_TEXT
+          description: 'MySQL user password.'
+        - macro: '{$MYSQL.USER}'
+          value: root
+          description: 'MySQL username.'
+      inventory_mode: DISABLED

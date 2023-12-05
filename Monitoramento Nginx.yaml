@@ -1,0 +1,19 @@
+zabbix_export:
+  version: '6.0'
+  date: '2023-12-05T19:27:42Z'
+  groups:
+    - uuid: f2f2226a7cc8474281f3ecd3f06f78f6
+      name: 'Monitoração Nginx'
+  hosts:
+    - host: zabbix-web
+      name: 'Zabbix Front'
+      templates:
+        - name: 'Nginx by HTTP'
+      groups:
+        - name: 'Monitoração Nginx'
+      interfaces:
+        - useip: 'NO'
+          ip: ''
+          dns: zabbix-web
+          interface_ref: if1
+      inventory_mode: DISABLED
