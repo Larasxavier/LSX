@@ -11,5 +11,4 @@ USER root
 COPY odbc.ini /etc/odbc.ini
 
 RUN \
-    yum install -y unixODBC unixODBC-devel \
-    zabbix_server -R config_cache_reload
+    yum install -y unixODBC unixODBC-devel
