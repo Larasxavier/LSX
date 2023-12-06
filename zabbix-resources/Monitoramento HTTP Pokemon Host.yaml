@@ -1,0 +1,16 @@
+zabbix_export:
+  version: '6.0'
+  date: '2023-12-06T00:57:13Z'
+  groups:
+    - uuid: 520d537786e5461fb2307dcbc330a46a
+      name: POKEMON
+  hosts:
+    - host: pokeapi.co
+      name: Pokemonapi
+      templates:
+        - name: 'Template Pokemon'
+      groups:
+        - name: POKEMON
+      interfaces:
+        - interface_ref: if1
+      inventory_mode: DISABLED
