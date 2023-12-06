@@ -21,7 +21,7 @@ Uma vez que o agente zabbix foi instalado, basta criar um usuário mysql para cr
 
 **PASSO 3**: Monitoramento da API Pokemon com descoberta
 
-Foi criado o host pokeapi.co e criado o item de consulta utilizando a macro do host, após isso, criei um template apenas para realizar a descoberta e criação do prototype itens. 
+Inicialmente, foi criado o template Pokemon e criada a descoberta (Discovery rule) acrescentando o pré-processamneto e macros LLD. Após isso, associei ao host pokeapi.co e criei o protótipo de item e de host, colocando as macros e grupo como foi sugerido.
 
 **PASSO 4**: Monitoramento de Apache do webservice
 
