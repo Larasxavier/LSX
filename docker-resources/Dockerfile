@@ -10,5 +10,8 @@ USER root
 
 COPY odbc.ini /etc/odbc.ini
 
+COPY mysql-connector-odbc-8.2.0-1.el8.x86_64.rpm /tmp
+
 RUN \
-    yum install -y unixODBC unixODBC-devel
+    yum install -y unixODBC unixODBC-devel /tmp/mysql-connector-odbc-8.2.0-1.el8.x86_64.rpm \
+    rm -fr /tmp/mysql-connector-odbc-8.2.0-1.el8.x86_64.rpm
