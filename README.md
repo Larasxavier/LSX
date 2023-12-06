@@ -8,12 +8,12 @@
 
 Foi provisionada uma VM Linux no ambiente de cloud da Azure para instalação e configuração de uma implementação de Kubernetes (k8S) da SUSE chamada de K3s (https://k3s.io/). Para gerenciamento dessa estrutura de k8s, foi instalado e configurado o Rancher (https://www.rancher.com/) de forma a facilitar o processo de deploy e configuração. Apartir do Rancher, foi criado um namespace chamado zabbix para que fosse feito o deploy dos componentes da stack Zabbix na versão 6.0.23. Os seguintes recursos k8s foram utilizados:
 
-* Daemonset: foi feito o deploy do zabbix agent
-* StatefulSet o mysql e o server com a imagem de container do zabbix customizada acrescentando o driver odbc.
-* Deployment o zabbix web na versão nginx.
-* Secrets todos os dados sensíveis da stack foram criados recursos de kubernetes do tipo secrets,
-* Configmap já as informações que são variáveis de ambiente, foram criados os config maps.
-* Ingress E, para externalizar o serviço do zabbix web foi criado o ingress para rota. 
+* Daemonset: Para deploy do zabbix-agent
+* StatefulSet: Para o deploy do mysql-server e o zabbix-server utilizado a imagem de container customizada acrescentando o driver odbc.
+* Deployment: Para o deploy do zabbix-web na versão nginx.
+* Secrets: Para armazenamento de todos os dados sensíveis (usuários, senhas e etc) da stack.
+* Configmap: Para armazenamento de todas as varíaveis de ambiente da stack.
+* Ingress: Para externalizar o serviço do zabbix-web. 
 
 **PASSO 2**: Monitoração de Serviço específico no Zabbix.
 
