@@ -1,0 +1,68 @@
+zabbix_export:
+  version: '6.0'
+  date: '2023-12-06T01:44:01Z'
+  groups:
+    - uuid: 520d537786e5461fb2307dcbc330a46a
+      name: POKEMON
+    - uuid: c916499ed71e4cbdba7c0f70a46c1e54
+      name: 'Template Pokemon'
+  templates:
+    - uuid: 1e4765668d0b4c0892af6471261e5d40
+      template: 'Template Pokemon'
+      name: 'Template Pokemon'
+      groups:
+        - name: 'Template Pokemon'
+      items:
+        - uuid: 336237fffdf741dbbd9466116798ef2e
+          name: 'Pokemon consulta'
+          type: HTTP_AGENT
+          key: page1
+          trends: '0'
+          value_type: CHAR
+          timeout: 9s
+          url: 'https://{HOST.HOST}/api/v2/pokemon/'
+      discovery_rules:
+        - uuid: 8db77e0d2bec4b8381696d5bebb27988
+          name: 'Discovery pokemons'
+          type: DEPENDENT
+          key: discovery.pokemons
+          delay: '0'
+          lifetime: 0d
+          item_prototypes:
+            - uuid: db2b14d53ca143f483bb05a81792144f
+              name: 'Pokemon {#NAME}'
+              type: DEPENDENT
+              key: 'poke[{#NAME}]'
+              delay: '0'
+              trends: '0'
+              value_type: CHAR
+              master_item:
+                key: page1
+          host_prototypes:
+            - uuid: 8db73035ea3e4dd59238300b5fd9abdd
+              host: 'Pokemon {#NAME}'
+              name: 'Pokemon {#NAME}'
+              group_links:
+                - group:
+                    name: POKEMON
+              group_prototypes:
+                - name: '{#NAME}'
+              templates:
+                - name: 'Template Pokemon'
+              macros:
+                - macro: '{$URL}'
+                  value: $..url
+          master_item:
+            key: page1
+          lld_macro_paths:
+            - lld_macro: '{#NAME}'
+              path: $.name
+            - lld_macro: '{#URL}'
+              path: $..url
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.results
+      macros:
+        - macro: '{$URL}'
+          value: $.url
