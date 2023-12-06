@@ -6,7 +6,7 @@
 
 **PASSO 1**: Criação do stack de monitoramento.
 
-Foi provisionada uma VM Linux no ambiente de cloud da Azure para instalação e configuração de uma implementação de Kubernetes (k8S) da SUSE chamada de K3s (https://k3s.io/). Para gerenciamento dessa estrutura de k8s, foi instalado e configurado o Rancher (https://www.rancher.com/) de forma a facilitar o processo de deploy e configuração. Apartir do Rancher, foi criado um namespace chamado zabbix para que fosse feito o deploy dos componentes da stack Zabbix na versão 6.0.23. Os seguintes recursos k8s foram utilizados:
+Foi provisionada uma VM Linux no ambiente de cloud da Azure para instalação e configuração de uma implementação de Kubernetes (k8S) da SUSE chamada de K3s (https://k3s.io/). Para gerenciamento dessa estrutura de k8s, foi instalado e configurado o Rancher (https://www.rancher.com/) de forma a facilitar o processo de deploy e configuração. A partir do Rancher, foi criado um namespace chamado zabbix para que fosse feito o deploy dos componentes da stack Zabbix na versão 6.0.23. Os seguintes recursos k8s foram utilizados:
 
 * Daemonset: Para deploy do zabbix-agent
 * StatefulSet: Para o deploy do mysql-server e o zabbix-server utilizado a imagem de container customizada acrescentando o driver odbc.
@@ -17,7 +17,7 @@ Foi provisionada uma VM Linux no ambiente de cloud da Azure para instalação e 
 
 **PASSO 2**: Monitoração de Serviço específico no Zabbix.
 
-Uma vez que o agente zabbix foi instalado, basta criar um usuário mysql para criar a conexão entre banco e server através do agente,  aplicar o template "MySQL by Zabbix agent" e alterar as Macros do host/Instância que está sendo monitorada com as informações de usuário e senha da base que eles passarão a coletar. Não utilizei o driver ODBC para poder contemplar uma das facilidades que o agente propõe. Mas, se tratando de driver ODBC, a criação do script item pode se desenvolver de forma que ele atenderá ao tipo de item Monitoração de Banco de Dados e com todas as macros de conexão e caminho do driver preenchidas no host e referenciadas no item por motivos de segurança, haverá um espaço de pesquisa SQL para criação de um script Item. 
+Uma vez que o agente zabbix foi instalado, basta criar um usuário mysql para criar a conexão entre banco e server através do agente,  aplicar o template "MySQL by Zabbix agent" e alterar as Macros do host/Instância que está sendo monitorada com as informações de usuário e senha da base que eles passarão a coletar. Não utilizei o driver ODBC para poder contemplar uma das facilidades que o agente propõe. Mas, se tratando de driver ODBC, a criação do script item pode se desenvolver de forma que ele atenderá ao tipo de item Monitoração de Banco de Dados e com todas as macros de conexão e caminho do driver preenchidas no host e referenciadas no item por motivos de segurança, haverá um espaço de consulta SQL. 
 
 **PASSO 3**: Monitoramento da API Pokemon com descoberta
 
@@ -25,7 +25,7 @@ Inicialmente, foi criado o template Pokemon e criada a descoberta (Discovery rul
 
 **PASSO 4**: Monitoramento de Apache do webservice
 
-4)  Teste a disponibilidade do http_stub_status_module nginx, e aplique o template "Nginx by Zabbix agent" no host. Nesse caso, decidi monitorar o frontend zabbix
+4) O Teste a disponibilidade do http_stub_status_module nginx, e aplique o template "Nginx by Zabbix agent" no host. Nesse caso, decidi monitorar o frontend zabbix
 
 **PASSO 5**: Processo XYZ
 
