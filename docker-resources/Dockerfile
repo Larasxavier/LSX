@@ -8,12 +8,8 @@ LABEL maintainer="Lara Silva Xavier <laritxas@gmail.com>"
 
 USER root
 
-RUN yum clean all && \
-    yum repolist && \
-    rm -rf /var/cache/yum/*
-
-
 COPY odbc.ini /etc/odbc.ini
 
 RUN \
-    yum install -y unixODBC unixODBC-devel
+    yum install -y unixODBC unixODBC-devel \
+    zabbix_server -R config_cache_reload

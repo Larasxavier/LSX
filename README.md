@@ -4,10 +4,19 @@
 * [Github](https://github.com/Larasxavier/LSX)
 
 
-**PASSO 1**: Criação do stack de monitoramento. 
-Foi provisionada um VM no ambiente de cloud da Azure e instalado um provisionamento de k3s de kubernetes da suse. Nesse k3s foi configurado o Rancher para que facilitasse o processo de gerenciamento e configuração da stack Zabbix. Foi criado um namespace chamado Zabbix, e nesse namespace echamado zabbix foi feito o deploy dos componentes da stack zabbix da versão 6.0.23. Como o daemonset foi feito o deploy do zabbix agent, statefulset o mysql e o server com a imagem de container do zabbix customizada acrescentando o driver odbc. E, como deployment o zabbix web na versão nginx. todos os dados sensíveis da stack foram criados recursos de kubernetes do tipo secrets, já as informações que são variáveis de ambiente, foram criados os config maps. E, para externalizar o serviço do zabbix web foi criado o ingress para rota. 
+**PASSO 1**: Criação do stack de monitoramento.
+
+Foi provisionada uma VM Linux no ambiente de cloud da Azure para instalação e configuração de uma implementação de Kubernetes (k8S) da SUSE chamada de K3s (https://k3s.io/). Para gerenciamento dessa estrutura de k8s, foi instalado e configurado o Rancher (https://www.rancher.com/) de forma a facilitar o processo de deploy e configuração. Apartir do Rancher, foi criado um namespace chamado zabbix para que fosse feito o deploy dos componentes da stack Zabbix na versão 6.0.23. Os seguintes recursos k8s foram utilizados:
+
+* Daemonset: foi feito o deploy do zabbix agent
+* StatefulSet o mysql e o server com a imagem de container do zabbix customizada acrescentando o driver odbc.
+* Deployment o zabbix web na versão nginx.
+* Secrets todos os dados sensíveis da stack foram criados recursos de kubernetes do tipo secrets,
+* Configmap já as informações que são variáveis de ambiente, foram criados os config maps.
+* Ingress E, para externalizar o serviço do zabbix web foi criado o ingress para rota. 
 
 **PASSO 2**: Monitoração de Serviço específico no Zabbix.
+
 Uma vez que o agente zabbix foi instalado, basta criar um usuário mysql para criar a conexão entre banco e server através do agente,  aplicar o template "MySQL by Zabbix agent" e alterar as Macros do host/Instância que está sendo monitorada com as informações de usuário e senha da base que eles passarão a coletar. Não utilizei o driver ODBC para poder contemplar uma das facilidades que o agente propõe. Mas, se tratando de driver ODBC, a criação do script item pode se desenvolver de forma que ele atenderá ao tipo de item Monitoração de Banco de Dados e com todas as macros de conexão e caminho do driver preenchidas no host e referenciadas no item por motivos de segurança, haverá um espaço de pesquisa SQL para criação de um script Item. 
 
 **PASSO 3**: Monitoramento da API Pokemon com descoberta
@@ -15,6 +24,7 @@ Uma vez que o agente zabbix foi instalado, basta criar um usuário mysql para cr
 Foi criado o host pokeapi.co e criado o item de consulta utilizando a macro do host, após isso, criei um template apenas para realizar a descoberta e criação do prototype itens. 
 
 **PASSO 4**: Monitoramento de Apache do webservice
+
 4)  Teste a disponibilidade do http_stub_status_module nginx, e aplique o template "Nginx by Zabbix agent" no host. Nesse caso, decidi monitorar o frontend zabbix
 
 **PASSO 5**: Processo XYZ
@@ -29,7 +39,7 @@ Logo, será o primeiro passo para execução.
 5. Implementação no ambiente
 6. Testagem
 
- Entregáveis e Prazos.
+Entregáveis e Prazos.
 
 • Plano de monitoramento descrevendo os indicadores-chave de desempenho, juntamente com os recursos necessários para implantação (pré-requisitos);
 
