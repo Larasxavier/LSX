@@ -30,7 +30,7 @@ spec:
             - secretRef:
                 name: zabbix-db-secrets
                 optional: false
-          image: larasxavier/zabbix-server-mysql:6.0.23-1-centos
+          image: larasxavier/zabbix-server-mysql:6.0.23-centos
           imagePullPolicy: IfNotPresent
           name: zabbix-server
           ports:
